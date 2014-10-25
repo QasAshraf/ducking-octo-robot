@@ -29,6 +29,11 @@ $app['controller.tag'] = $app->share(
     }
 );
 
+$app['controller.user'] = $app->share(
+    function ($app) {
+        return new TC\Controllers\UserController($app['db']);
+    }
+);
 
 
 // On dev and stage...

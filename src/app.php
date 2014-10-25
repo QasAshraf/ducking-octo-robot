@@ -17,6 +17,15 @@ $app->get('/tag', function() use($app) {
       return $app->json($tags, 200);
   });
 
+$app->get('/user/{email}', function($email) use($app) {
+        $user = $app['controller.user']->find($email);
+
+        if(empty($user)){
+            return $app->json(null, 404);
+        }
+        return $app->json($user, 200);
+    });
+
 $app->get('/tag/{filter}', function($filter) use($app) {
     $tags = $app['controller.tag']->getFilterList($filter);
 

@@ -1,5 +1,0 @@
-# invoke rewrite engine
-#RewriteEngine On
-#RewriteBase /web/
-
-# add trailing slash if missing

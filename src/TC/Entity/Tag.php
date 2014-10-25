@@ -81,7 +81,7 @@ class Tag {
     public function toArray($displayId = false)
     {
         $array = array(
-          'name' => $this->getName()
+          'text' => $this->getName()
         );
 
         if($displayId)

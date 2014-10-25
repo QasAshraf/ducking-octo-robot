@@ -1,0 +1,23 @@
+{
+    "name": "kamikaze-kangarooz/tagchat-api",
+    "description": "API used by the TagChat mobile and web applications",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Shane Egan",
+            "email": "mail@shaneegan.co.uk"
+        },
+        {
+            "name": "Qas Ashraf",
+            "email": "mail@qasashraf.co.uk"
+        }
+    ],
+    "require": {
+        "silex/silex": "v1.2.2",
+        "filp/whoops": "1.1.2"
+    },
+    "autoload": {
+        "psr-0": {"": "src/"}
+    }
+}

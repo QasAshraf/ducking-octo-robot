@@ -6,7 +6,7 @@ $app = new Silex\Application();
 // Figure out environment based upon APP_ENV variable (environment)
 $env = getenv('APP_ENV') ? : 'prod';
 
-$env = 'dev';
+//$env = 'dev';
 
 // Read configuration based upon environment
 $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__ . "/../config/$env.json"));
@@ -30,6 +30,14 @@ $app['controller.tag'] = $app->share(
         return new TC\Controllers\TagController($app['db']);
     }
 );
+
+$app['controller.device'] = $app->share(
+    function ($app) {
+        return new TC\Controllers\DeviceController($app['db']);
+    }
+);
+
+
 
 // On dev and stage...
 if ($app['debug']) {

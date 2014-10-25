@@ -15,7 +15,9 @@
     ],
     "require": {
         "silex/silex": "v1.2.2",
-        "filp/whoops": "1.1.2"
+        "filp/whoops": "1.1.2",
+        "doctrine/dbal": "2.3.5",
+        "igorw/config-service-provider": "v1.2.2"
     },
     "autoload": {
         "psr-0": {"": "src/"}

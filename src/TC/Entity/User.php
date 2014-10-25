@@ -18,7 +18,7 @@ class User {
      * User's unique ID
      * @var int
      */
-    protected $id;
+    protected $id = null;
 
     /**
      * User's username aka e-mail address

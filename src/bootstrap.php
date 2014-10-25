@@ -23,6 +23,12 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
   ));
 
+$app['controller.tag'] = $app->share(
+    function ($app) {
+        return new TC\Controllers\TagFactory($app['db']);
+    }
+);
+
 // On dev and stage...
 if ($app['debug']) {
     $app->register(new Whoops\Provider\Silex\WhoopsServiceProvider);

@@ -1,4 +1,4 @@
-ducking-octo-robot
+Hack Manchester - API repository
 ==================
 
-Hack Manchester 2014 - API
+Fix it. Tries to use apigility.

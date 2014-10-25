@@ -1,10 +1,9 @@
-{
-    "tags": [
+[
         {
-            "name": "Hippy Music"
+            "text": "Hippy Music"
         },
         {
-            "name": "Classic Music"
+            "text": "Classic Music"
         }
     ]
-}
+

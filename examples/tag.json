@@ -1,16 +1,14 @@
-{
-    "tags": [
+[
         {
-            "name": "Swanky Dance Moves"
+            "text": "Swanky Dance Moves"
         },
         {
-            "name": "Hippy Music"
+            "text": "Hippy Music"
         },
         {
-            "name": "Italian Food"
+            "text": "Italian Food"
         },
         {
-            "name": "Classic Music"
+            "text": "Classic Music"
         }
     ]
-}

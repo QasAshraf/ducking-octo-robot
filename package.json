@@ -1,0 +1,30 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "TagChat API",
+  "main": "web/index.php",
+  "dependencies": {
+    "grunt": "^0.4.5"
+  },
+  "devDependencies": {
+    "grunt-cli": "^0.1.13",
+    "grunt-phplint": "0.0.5",
+    "grunt-shipit": "^0.4.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QasAshraf/ducking-octo-robot.git"
+  },
+  "keywords": [
+    "tagchat"
+  ],
+  "author": "Qas Ashraf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/QasAshraf/ducking-octo-robot/issues"
+  },
+  "homepage": "https://github.com/QasAshraf/ducking-octo-robot"
+}

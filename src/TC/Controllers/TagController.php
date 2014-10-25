@@ -52,7 +52,11 @@ class TagController{
     }
 
     /**
+     * Filter the tags in the DB, find only those that match the supplied filter.
+     *
      * @param $filter
+     *
+     * @return array
      */
     public function getFilterList($filter){
         $tags = $this->db->fetchAll('SELECT * FROM `tag` WHERE `name` LIKE ?', array('%'.$filter.'%'));

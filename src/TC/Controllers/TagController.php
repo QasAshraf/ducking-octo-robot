@@ -6,16 +6,19 @@
  * Time: 21:36
  */
 
+
+
 namespace TC\Controllers;
 
 use Doctrine\DBAL\Connection;
 use TC\Entity\Tag;
 
+
 /**
- * Class TagFactory
+ * Class TagController
  * @package TC\Controllers
  */
-class TagFactory{
+class TagController{
 
     /**
      * @var \Doctrine\DBAL\Connection
@@ -34,9 +37,15 @@ class TagFactory{
      * @param $filter
      */
     public function getFilterList($filter){
-        $tags = $this->db->fetchArray('SELECT `name` FROM `tag` WHERE `name` LIKE %?%', array($filter));
-        return $tags;
+        $tags = $this->db->fetchAll('SELECT * FROM `tag` WHERE `name` LIKE ?', array('%'.$filter.'%'));
+        $tagArray = array();
+        foreach($tags as $tag){
 
+           $tempTag = new Tag($tag);
+           $tagArray[] = $tempTag->toArray();
+        }
+
+        return  $tagArray;
     }
 
 

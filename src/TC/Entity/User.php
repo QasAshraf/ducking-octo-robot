@@ -16,12 +16,14 @@ class User {
 
     /**
      * User's unique ID
+     *
      * @var int
      */
     protected $id = null;
 
     /**
      * User's username aka e-mail address
+     *
      * @var string
      */
     protected $email;
@@ -39,6 +41,12 @@ class User {
     protected $devices = array();
 
     /**
+     * Array of Tags
+     * @var array
+     */
+    protected $tags = array();
+
+    /**
      * Default constructor, pass in keys in array and they will get assigned.
      *
      * @param array $data
@@ -54,6 +62,7 @@ class User {
 
     /**
      * Add a device to this users list of devices
+     *
      * @param Device $device
      */
     public function addDevice(Device $device)
@@ -63,6 +72,7 @@ class User {
 
     /**
      * Set the devices array to a list of devices
+     *
      * @param array $devices
      */
     public function setDevices(array $devices)
@@ -72,6 +82,7 @@ class User {
 
     /**
      * Get all current devices for this user
+     *
      * @return array
      */
     public function getDevices()
@@ -81,6 +92,7 @@ class User {
 
     /**
      * Set users email address
+     *
      * @param string $email
      */
     public function setEmail($email)
@@ -90,6 +102,7 @@ class User {
 
     /**
      * Get users current email address
+     *
      * @return string
      */
     public function getEmail()
@@ -99,6 +112,7 @@ class User {
 
     /**
      * Set users ID
+     *
      * @param int $id
      */
     private function setId($id)
@@ -108,6 +122,7 @@ class User {
 
     /**
      * Get ID for current user
+     *
      * @return int
      */
     public function getId()
@@ -117,6 +132,7 @@ class User {
 
     /**
      * Set password for this user
+     *
      * @param string $password
      */
     public function setPassword($password)
@@ -127,11 +143,66 @@ class User {
 
     /**
      * Get password hash for this current user
+     *
      * @return string
      */
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Add a specific tag to this users list of tags
+     *
+     * @param Tag $tag
+     */
+    public function addTag(Tag $tag)
+    {
+        array_push($this->tags, $tag);
+    }
+
+    /**
+     * Set the tags for this user, pass in a complete array of TC\Entity\Tag objects.
+     *
+     * @param array $tags
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+    }
+
+    /**
+     * Get list of tags this user is interested in.
+     *
+     * @return array
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+
+    /**
+     * Produce array representation of this object. Optionally display the ID if required, defaults to off.
+     *
+     * @param bool $displayId
+     *
+     * @return array
+     */
+    public function toArray($displayId = false)
+    {
+        $array = array(
+          'email' => $this->getEmail(),
+          'devices' => $this->getDevices(),
+          'tags' => $this->getTags()
+        );
+
+        if($displayId)
+        {
+            $array['id'] = $this->getId();
+        }
+
+        return $array;
     }
 
 } 

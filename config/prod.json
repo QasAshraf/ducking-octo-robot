@@ -1,3 +1,4 @@
+
 {
     "config":{
         "debug":false,
@@ -5,8 +6,8 @@
         {
             "server": "localhost",
             "port": "3306",
-            "username": "root",
-            "password": "",
+            "username": "tagchat",
+            "password": "Password123",
             "database": "tagchatapi"
         }
     }

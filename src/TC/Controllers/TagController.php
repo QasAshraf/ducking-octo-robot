@@ -34,6 +34,24 @@ class TagController{
     }
 
     /**
+     * Get all the tags from the DB
+     *
+     * @return array
+     */
+    public function findAll()
+    {
+        $result = $this->db->fetchAll('SELECT * FROM `tag`');
+        $tagArray = array();
+        foreach($result as $tag)
+        {
+            $tempTag = new Tag($tag);
+            $tagArray[] = $tempTag->toArray();
+        }
+
+        return $tagArray;
+    }
+
+    /**
      * @param $filter
      */
     public function getFilterList($filter){

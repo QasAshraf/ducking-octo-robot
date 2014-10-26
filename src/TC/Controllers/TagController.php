@@ -40,12 +40,12 @@ class TagController{
      */
     public function findAll()
     {
-        $result = $this->db->fetchAll('SELECT * FROM `tag`');
+        $result = $this->db->fetchAll('SELECT idtag AS id, name FROM `tag`');
         $tagArray = array();
         foreach($result as $tag)
         {
             $tempTag = new Tag($tag);
-            $tagArray[] = $tempTag->toArray();
+            $tagArray[] = $tempTag->toArray(true);
         }
 
         return $tagArray;
@@ -59,12 +59,12 @@ class TagController{
      * @return array
      */
     public function getFilterList($filter){
-        $tags = $this->db->fetchAll('SELECT * FROM `tag` WHERE `name` LIKE ?', array('%'.$filter.'%'));
+        $tags = $this->db->fetchAll('SELECT idtag AS id, name FROM `tag` WHERE `name` LIKE ?', array('%'.$filter.'%'));
         $tagArray = array();
         foreach($tags as $tag){
 
            $tempTag = new Tag($tag);
-           $tagArray[] = $tempTag->toArray();
+           $tagArray[] = $tempTag->toArray(true);
         }
 
         return  $tagArray;

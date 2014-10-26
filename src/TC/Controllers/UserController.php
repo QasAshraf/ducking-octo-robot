@@ -58,7 +58,7 @@ class UserController{
         $devices = $this->db->fetchAll('SELECT friendly_name, api_key FROM `device` WHERE fk_iduser = ?',
           array($id));
 
-        $tags = $this->db->fetchAll('SELECT tag.idtag AS id, tag.name FROM tag, usertag WHERE tag.idtag = usertag.fk_userid = ?',
+        $tags = $this->db->fetchAll('SELECT tag.idtag AS id, tag.name FROM tag JOIN usertag ON tag.idtag = usertag.fk_tagid WHERE usertag.fk_userid = ?',
           array($id));
 
         foreach($result as $user)

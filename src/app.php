@@ -157,6 +157,15 @@ $app->put('/device', function (\Symfony\Component\HttpFoundation\Request $reques
     return $app->json(array('status' => '200', 'message' => 'location updated'), 200);
 });
 
+$app->get('/location', function() use ($app) {
+      $locations = $app['controller.location']->findAll();
+
+      if(empty($locations)){
+          return $app->json('', 204);
+      }
+      return $app->json($locations, 200);
+});
+
 $app->error(function (\Exception $e, $code) use ($app) {
       return $app->json(array('status' => $code, 'message' => $e->getMessage()), $code);
   });

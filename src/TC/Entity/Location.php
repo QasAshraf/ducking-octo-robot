@@ -43,6 +43,41 @@ class Location {
      */
     protected $longitude;
 
+    protected $tag1;
+    protected $tag2;
+
+    /**
+     * @param mixed $tag2
+     */
+    public function setTag2($tag2)
+    {
+        $this->tag2 = $tag2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTag2()
+    {
+        return $this->tag2;
+    }
+
+    /**
+     * @param mixed $tag1
+     */
+    public function setTag1($tag1)
+    {
+        $this->tag1 = $tag1;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTag1()
+    {
+        return $this->tag1;
+    }
+
     /**
      * Default constructor, pass in keys in array and they will get assigned.
      *
@@ -142,7 +177,11 @@ class Location {
         $array = array(
           'name' => $this->getName(),
           'lat' => $this->getLatitude(),
-          'lon' => $this->getLongitude()
+          'lon' => $this->getLongitude(),
+          'tags' => array(
+            array('priority' => 1, 'name' => $this->getTag1()),
+            array('priority' => 2, 'name' => $this->getTag2())
+          ),
         );
 
         if($displayId)

@@ -47,6 +47,11 @@ $app['controller.cron'] = $app->share(
     }
 );
 
+$app['controller.location'] = $app->share(
+    function($app) {
+        return new TC\Controllers\LocationController($app['db']);
+    }
+);
 
 
 // On dev and stage...

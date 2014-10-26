@@ -122,9 +122,14 @@ $app->post('/user/logon', function () use ($app) {
       $user = array(
         'email' => $request->get('email'),
         'password' => $request->get('password'),
-        'latitude' => $request->request->get('latitude'),
-        'longitude' => $request->request->get('longitude'),
+        'latitude' => $request->get('latitude'),
+        'longitude' => $request->get('longitude'),
       );
+
+      if(is_null($user['email']) || is_null($user['password']))
+      {
+          return $app->json(array('status' => 400, 'messsage' => 'Email or password is missing'));
+      }
 
       $userCtrl = $app['controller.user'];
       $db_user = $userCtrl->find($user['email']);

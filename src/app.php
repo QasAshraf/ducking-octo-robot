@@ -42,56 +42,90 @@ $app->get('/user/{email}', function($email) use($app) {
 $app->put('/user', function(\Symfony\Component\HttpFoundation\Request $request) use($app) {
     $userController = $app['controller.user'];
     $user = array(
-        'email' => $request->request->get('email'),
+        'api_key' => $request->request->get('api_key'),
         'firstname'  => $request->request->get('firstname'),
         'lastname' => $request->request->get('lastname')
     );
 
+    if(!$app['controller.device']->exists($user['api_key']))
+    {
+        return $app->json(array('status' => 404, 'message' => 'Couldn\'t find user with API supplied'));
+    }
+
     try {
         $userController->update($user);
     } catch(\Exception $e) {
-        return $app->json(array('errors' => array($e->getMessage())), 404);
+        return $app->json(array('errors' => array($e->getMessage())), 500);
     }
 
-    return $app->json($user, 201);
+    return $app->json($user, 200);
 });
 
-$app->post('/user', function (\Symfony\Component\HttpFoundation\Request $request) use ($app) {
-    $userController = $app['controller.user'];
-    $user = array(
+$app->post('/user/register', function (\Symfony\Component\HttpFoundation\Request $request) use ($app) {
+      $userController = $app['controller.user'];
+      $user = array(
         'email' => $request->request->get('email'),
         'firstname'  => $request->request->get('firstname'),
         'lastname' => $request->request->get('lastname'),
         'password' => password_hash($request->request->get('password'), PASSWORD_BCRYPT),
         'latitude' => $request->request->get('latitude'),
         'longitude' => $request->request->get('longitude'),
-    );
+      );
 
-    // TODO: Validate inputs, if any are empty then return 400 Bad Request
+      // TODO: Validate inputs, if any are empty then return 400 Bad Request
 
-    try {
-        $user['id'] = $userController->create($user);
+      try {
+          $user['id'] = $userController->create($user);
 
-        // Generate user an API key
-        try {
-            $user['api_key'] = $app['controller.device']->create($user);
-            unset($user['id']);
-            unset($user['password']);
-            unset($user['latitude']);
-            unset($user['longitude']);
-        }
-        catch (\Exception $e)
-        {
-            // Delete user as creating API was fail
-            $userController->delete($user['id']);
-            return $app->json(array('errors' => array($e->getMessage())), 500);
-        }
-    } catch(\Exception $e) {
-        return $app->json(array('errors' => array($e->getMessage())), 500);
-    }
+          // Generate user an API key
+          try {
+              $user['api_key'] = $app['controller.device']->create($user);
+              unset($user['id']);
+              unset($user['password']);
+              unset($user['latitude']);
+              unset($user['longitude']);
+          }
+          catch (\Exception $e)
+          {
+              // Delete user as creating API was fail
+              $userController->delete($user['id']);
+              return $app->json(array('errors' => array($e->getMessage())), 500);
+          }
+      } catch(\Exception $e) {
+          return $app->json(array('errors' => array($e->getMessage())), 500);
+      }
 
-    return $app->json($user, 201);
-});
+      return $app->json($user, 201);
+  });
+
+$app->post('/user/logon', function () use ($app) {
+      $request = $app['request'];
+      $user = array(
+        'email' => $request->get('email'),
+        'password' => $request->get('password'),
+        'latitude' => $request->request->get('latitude'),
+        'longitude' => $request->request->get('longitude'),
+      );
+
+      $userCtrl = $app['controller.user'];
+      $db_user = $userCtrl->find($user['email']);
+
+      if(!password_verify($user['password'], $db_user->getPassword()))
+      {
+          return $app->json(array('status' => 403, 'message' => 'Invalid credentials'));
+      }
+      else
+      {
+          // Generate new API key, woop.
+          $user['id'] = $db_user->getId();
+          $user['api_key'] = $app['controller.device']->create($user);
+          unset($user['id']);
+          unset($user['password']);
+          unset($user['latitude']);
+          unset($user['longitude']);
+          return $app->json($user, 200);
+      }
+  });
 
 $app->delete('/device', function() use ($app) {
       $deviceCtrl = $app['controller.device'];
@@ -121,6 +155,15 @@ $app->put('/device', function (\Symfony\Component\HttpFoundation\Request $reques
         return $app->json(array('errors' => array($e->getMessage())), 404);
     }
     return $app->json(array('status' => '200', 'message' => 'Device location updated'), 200);
+});
+
+$app->get('/location', function() use ($app) {
+      $locations = $app['controller.location']->findAll();
+
+      if(empty($locations)){
+          return $app->json('', 204);
+      }
+      return $app->json($locations, 200);
 });
 
 $app->error(function (\Exception $e, $code) use ($app) {

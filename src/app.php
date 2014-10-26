@@ -233,8 +233,8 @@ $app->get('/location', function() use ($app) {
       return $app->json($locations, 200);
 });
 
-$app->get('/messages/{locationid}', function($locationid) use ($app) {
-    $messages = $app['controller.messages']->getMessages($locationid);
+$app->get('/messages/{api_key}', function($api_key) use ($app) {
+    $messages = $app['controller.messages']->getMessages($api_key);
 
     if(empty($messages)){
         return $app->json('', 204);

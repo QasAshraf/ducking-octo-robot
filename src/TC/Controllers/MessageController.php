@@ -25,19 +25,13 @@ class MessageController {
         $this->db = $db;
     }
 
-    public function getMessages($locationid)
+    public function getMessages($api_key)
     {
 
-
+        $deviceInfo = $this->db->fetchAssoc('SELECT * FROM device LEFT JOIN userlocation ON device.iddevice = userlocation.fk_deviceid WHERE api_key = ?', array($api_key));
+        $locationid = $deviceInfo['fk_locationid'];
         $messages = $this->db->fetchAll('SELECT * FROM chatroom LEFT JOIN device ON  device.iddevice = chatroom.fk_deviceid LEFT JOIN user ON user.iduser = device.fk_iduser WHERE fk_locationid=? ORDER BY timestamp DESC LIMIT 50', array($locationid));
-/*
-        $output = array();
 
-        foreach($messages as $message)
-        {
-            $output[] = $messages;
-        }
-*/
         return $messages;
     }
 

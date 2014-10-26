@@ -61,11 +61,31 @@ $app->post('/user', function (\Symfony\Component\HttpFoundation\Request $request
     $user = array(
         'email' => $request->request->get('email'),
         'firstname'  => $request->request->get('firstname'),
-        'lastname' => $request->request->get('lastname')
+        'lastname' => $request->request->get('lastname'),
+        'password' => password_hash($request->request->get('password'), PASSWORD_BCRYPT),
+        'latitude' => $request->request->get('latitude'),
+        'longitude' => $request->request->get('longitude'),
     );
+
+    // TODO: Validate inputs, if any are empty then return 400 Bad Request
 
     try {
         $user['id'] = $userController->create($user);
+
+        // Generate user an API key
+        try {
+            $user['api_key'] = $app['controller.device']->create($user);
+            unset($user['id']);
+            unset($user['password']);
+            unset($user['latitude']);
+            unset($user['longitude']);
+        }
+        catch (\Exception $e)
+        {
+            // Delete user as creating API was fail
+            $userController->delete($user['id']);
+            return $app->json(array('errors' => array($e->getMessage())), 500);
+        }
     } catch(\Exception $e) {
         return $app->json(array('errors' => array($e->getMessage())), 500);
     }

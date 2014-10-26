@@ -53,20 +53,22 @@ class DeviceController{
     }
 
     /**
-     * Takes a user's ID, generates an API key based on this, stores in DB and returns API key to user.
+     * Takes a User array, generates an API key based on this, stores in DB and returns API key to user.
      *
-     * @param $uid
+     * @param $user
      *
      * @return string
      */
-    public function create($uid)
+    public function create($user)
     {
         $seed = rand() + time();
-        $key = hash('sha512', $seed);
+        $key = substr(hash('sha256', $seed), 0, 40);
 
         $data = array(
-            'user_id' => $uid,
-            'api_key' => $key
+            'fk_iduser' => $user['id'],
+            'api_key' => $key,
+            'lat' => $user['latitude'],
+            'lon' => $user['longitude'],
         );
 
         $this->db->insert('device', $data);

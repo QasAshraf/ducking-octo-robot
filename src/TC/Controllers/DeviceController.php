@@ -95,6 +95,11 @@ class DeviceController{
 
     }
 
+    public function getUserIdFromKey($key)
+    {
+        return $this->db->fetchColumn('SELECT fk_iduser FROM device WHERE api_key = ?', array($key));
+    }
+
 }
 
 

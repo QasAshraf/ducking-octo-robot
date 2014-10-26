@@ -70,6 +70,22 @@ class TagController{
         return  $tagArray;
     }
 
+    public function create($name)
+    {
+        // Don't need to create if a tag called this already exists
+        $result = $this->db->fetchColumn('SELECT idtag FROM tag WHERE name = ?', array($name));
+        if($result)
+        {
+            return $result;
+        }
+
+        $data = array(
+          'name' => $name
+        );
+
+        $this->db->insert('tag', $data);
+        return $this->db->lastInsertId();
+    }
 
 }
 

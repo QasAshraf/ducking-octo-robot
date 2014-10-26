@@ -29,6 +29,12 @@ $app['controller.tag'] = $app->share(
     }
 );
 
+$app['controller.device'] = $app->share(
+  function ($app) {
+      return new TC\Controllers\DeviceController($app['db']);
+  }
+);
+
 
 
 // On dev and stage...

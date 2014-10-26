@@ -11,8 +11,6 @@
 namespace TC\Controllers;
 
 use Doctrine\DBAL\Connection;
-use TC\Entity\Device;
-
 
 /**
  * Class DeviceController
@@ -34,18 +32,24 @@ class DeviceController{
     }
 
     /**
-     * @param $filter
+     * Checks for the existence of a device identified by supplied $key.
+     *
+     * @param $key
+     *
+     * @return bool
      */
-    public function getFilterList($filter){
-        $tags = $this->db->fetchAll('SELECT * FROM `tag` WHERE `name` LIKE ?', array('%'.$filter.'%'));
-        $tagArray = array();
-        foreach($tags as $tag){
-
-           $tempTag = new Tag($tag);
-           $tagArray[] = $tempTag->toArray();
-        }
-
-        return  $tagArray;
+    public function exists($key)
+    {
+        return 1 === (int) $this->db->fetchColumn('SELECT count(*) FROM device WHERE api_key = ?', array($key));
+    }
+    /**
+     * Removes the device identified by the provided API key from the database
+     *
+     * @param $key
+     */
+    public function remove($key)
+    {
+        $this->db->delete('device', array('api_key' => $key));
     }
 
 

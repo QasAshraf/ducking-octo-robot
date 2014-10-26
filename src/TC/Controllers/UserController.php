@@ -50,6 +50,26 @@ class UserController{
         return array();
     }
 
+    public function findById($id)
+    {
+        $result = $this->db->fetchAll('SELECT iduser AS id, firstname, lastname, password, email FROM `user` WHERE iduser = ?',
+          array($id));
+
+        $devices = $this->db->fetchAll('SELECT friendly_name, api_key FROM `device` WHERE fk_iduser = ?',
+          array($id));
+
+        $tags = $this->db->fetchAll('SELECT tag.idtag AS id, tag.name FROM tag, usertag WHERE tag.idtag = usertag.fk_userid = ?',
+          array($id));
+
+        foreach($result as $user)
+        {
+            $user['devices'] = $devices;
+            $user['tags'] = $tags;
+            return new User($user);
+        }
+        return array();
+    }
+
     public function create($user)
     {
         $result = $this->db->fetchAll('SELECT * FROM `user` WHERE email = ?', array($user['email']));

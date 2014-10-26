@@ -30,15 +30,6 @@ $app->get('/tag/{filter}', function($filter) use($app) {
     return $app->json($tags, 200);
 });
 
-$app->get('/user/{email}', function($email) use($app) {
-        $user = $app['controller.user']->find($email);
-
-        if(empty($user)){
-            return $app->json(null, 404);
-        }
-        return $app->json($user, 200);
-    });
-
 $app->put('/user', function(\Symfony\Component\HttpFoundation\Request $request) use($app) {
     $userController = $app['controller.user'];
     $user = array(
@@ -60,6 +51,34 @@ $app->put('/user', function(\Symfony\Component\HttpFoundation\Request $request) 
 
     return $app->json($user, 200);
 });
+
+$app->get('/user/{key}', function($key) use ($app) {
+      $userController = $app['controller.user'];
+
+      if(!$app['controller.device']->exists($key))
+      {
+          return $app->json(array('status' => 404, 'message' => 'Couldn\'t find user with API key supplied'));
+      }
+
+      try {
+          $uid = $app['controller.device']->getUserIdFromKey($key);
+          $user = $userController->findById($uid);
+          return $app->json(array('status' => 200, 'user' => $user->toArray(true)), 200);
+      } catch(\Exception $e) {
+          return $app->json(array('errors' => array($e->getMessage())), 500);
+      }
+
+
+  });
+
+$app->get('/user/{email}', function($email) use($app) {
+      $user = $app['controller.user']->find($email);
+
+      if(empty($user)){
+          return $app->json(null, 404);
+      }
+      return $app->json($user, 200);
+  });
 
 $app->post('/user/register', function (\Symfony\Component\HttpFoundation\Request $request) use ($app) {
       $userController = $app['controller.user'];

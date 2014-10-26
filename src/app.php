@@ -228,6 +228,15 @@ $app->get('/location', function() use ($app) {
       return $app->json($locations, 200);
 });
 
+$app->get('/messages/{locationid}', function($locationid) use ($app) {
+    $messages = $app['controller.messages']->getMessages($locationid);
+
+    if(empty($messages)){
+        return $app->json('', 204);
+    }
+    return $app->json($messages, 200);
+});
+
 $app->error(function (\Exception $e, $code) use ($app) {
       return $app->json(array('status' => $code, 'message' => $e->getMessage()), $code);
   });

@@ -53,6 +53,12 @@ $app['controller.location'] = $app->share(
     }
 );
 
+$app['controller.messages'] = $app->share(
+    function($app) {
+        return new TC\Controllers\MessageController($app['db']);
+    }
+);
+
 
 // On dev and stage...
 if ($app['debug']) {

@@ -49,6 +49,8 @@ $app['controller.cron'] = $app->share(
     }
 );
 
+
+
 // On dev and stage...
 if ($app['debug']) {
     $app->register(new Whoops\Provider\Silex\WhoopsServiceProvider);

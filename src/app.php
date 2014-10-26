@@ -86,7 +86,22 @@ $app->delete('/device', function() use ($app) {
           return $app->json(array('status' => '200', 'message' => 'API key has been removed'), 200);
       }
 
-  });
+});
+
+$app->put('/device', function (\Symfony\Component\HttpFoundation\Request $request) use ($app) {
+
+    $deviceCtrl = $app['controller.device'];
+    $api_key = $request->request->get('api_key');
+    $lat = $request->request->get('lat');
+    $lon = $request->request->get('lon');
+
+    try{
+        $deviceCtrl->updateLocation($api_key, $lat, $lon);
+    } catch(\Exception $e) {
+        return $app->json(array('errors' => array($e->getMessage())), 404);
+    }
+    return $app->json(array('status' => '200', 'message' => 'location updated'), 200);
+});
 
 $app->error(function (\Exception $e, $code) use ($app) {
       return $app->json(array('status' => $code, 'message' => $e->getMessage()), $code);

@@ -43,6 +43,23 @@ $app->get('/user/{email}', function($email) use($app) {
         return $app->json($user, 200);
     });
 
+$app->put('/user', function(\Symfony\Component\HttpFoundation\Request $request) use($app) {
+    $userController = $app['controller.user'];
+    $user = array(
+        'email' => $request->request->get('email'),
+        'firstname'  => $request->request->get('firstname'),
+        'lastname' => $request->request->get('lastname')
+    );
+
+    try {
+        $userController->update($user);
+    } catch(\Exception $e) {
+        return $app->json(array('errors' => array($e->getMessage())), 404);
+    }
+
+    return $app->json($user, 201);
+});
+
 $app->post('/user', function (\Symfony\Component\HttpFoundation\Request $request) use ($app) {
     $userController = $app['controller.user'];
     $user = array(

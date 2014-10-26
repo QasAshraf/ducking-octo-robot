@@ -59,6 +59,17 @@ class UserController{
         return $this->db->lastInsertId();
 
     }
+
+    public function update($user)
+    {
+        $result = $this->db->fetchAll('SELECT * FROM `user` WHERE email = ?', array($user['email']));
+        if(empty($result)) {
+            throw new \Exception("User not found from email address");
+        }
+        $this->db->executeQuery('UPDATE `user` set firstname = ?, lastname = ?  where email = ?', array($user['firstname'], $user['lastname'], $user['email']));
+        return $this->db->lastInsertId();
+
+    }
 }
 
 

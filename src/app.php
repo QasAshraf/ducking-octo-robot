@@ -117,14 +117,14 @@ $app->post('/user/register', function (\Symfony\Component\HttpFoundation\Request
       return $app->json($user, 201);
   });
 
-$app->post('/user/logon', function () use ($app) {
-      $request = $app['request'];
+$app->post('/user/logon', function (\Symfony\Component\HttpFoundation\Request $request) use ($app) {
       $user = array(
-        'email' => $request->get('email'),
-        'password' => $request->get('password'),
-        'latitude' => $request->get('latitude'),
-        'longitude' => $request->get('longitude'),
+        'email' => $request->request->get('email'),
+        'password' => $request->request->get('password'),
+        'latitude' => $request->request->get('latitude'),
+        'longitude' => $request->request->get('longitude'),
       );
+
 
       if(is_null($user['email']) || is_null($user['password']))
       {
@@ -134,7 +134,7 @@ $app->post('/user/logon', function () use ($app) {
       $userCtrl = $app['controller.user'];
       $db_user = $userCtrl->find($user['email']);
 
-      if(!password_verify($user['password'], $db_user->getPassword()))
+      if(empty($db_user) || !password_verify($user['password'], $db_user->getPassword()))
       {
           return $app->json(array('status' => 403, 'message' => 'Invalid credentials'));
       }

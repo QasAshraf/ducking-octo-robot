@@ -52,6 +52,26 @@ class DeviceController{
         $this->db->delete('device', array('api_key' => $key));
     }
 
+    /**
+     * Takes a user's ID, generates an API key based on this, stores in DB and returns API key to user.
+     *
+     * @param $uid
+     *
+     * @return string
+     */
+    public function create($uid)
+    {
+        $seed = rand() + time();
+        $key = hash('sha512', $seed);
+
+        $data = array(
+            'user_id' => $uid,
+            'api_key' => $key
+        );
+
+        $this->db->insert('device', $data);
+        return $key;
+    }
 
 }
 

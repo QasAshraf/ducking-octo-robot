@@ -34,6 +34,24 @@ class User {
      */
     protected $password;
     /**
+     * Users First Name
+     *
+     * @var string
+     */
+    protected $firstname;
+    /**
+     * Users Last Name
+     *
+     * @var string
+     */
+    protected $lastname;
+    /**
+     * Users radius pref for front end
+     *
+     * @var string
+     */
+    protected $radiuspref;
+    /**
      * Array of Devices
      *
      * @var array
@@ -180,6 +198,55 @@ class User {
     {
         return $this->tags;
     }
+
+    /**
+     * @param string $lastname
+     */
+    public function setLastname($lastname)
+    {
+        $this->lastname = $lastname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * @param string $firstname
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * @param string $radiuspref
+     */
+    public function setRadiuspref($radiuspref)
+    {
+        $this->radiuspref = $radiuspref;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRadiuspref()
+    {
+        return $this->radiuspref;
+    }
+
 
 
     /**

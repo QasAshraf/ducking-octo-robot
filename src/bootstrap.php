@@ -29,6 +29,12 @@ $app['controller.tag'] = $app->share(
     }
 );
 
+$app['controller.cron'] = $app->share(
+    function($app) {
+        return new TC\Controllers\CronController($app['db']);
+    }
+);
+
 
 
 // On dev and stage...

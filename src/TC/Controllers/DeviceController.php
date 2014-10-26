@@ -74,6 +74,27 @@ class DeviceController{
         $this->db->insert('device', $data);
         return $key;
     }
+
+    /**
+     * Takes device api key and update the lat, lon
+     *
+     * @param $key
+     *
+     * @param $lat
+     *
+     * @param $lon
+     */
+    public function updateLocation($key, $lat, $lon)
+    {
+        $result = $this->db->fetchAll('SELECT * FROM `device` WHERE api_key = ?', array($key));
+        if(empty($result)) {
+            throw new \Exception("API key not found");
+        }
+        $this->db->executeQuery('UPDATE `device` set lat = ?, lon = ?  where api_key = ?', array($lat, $lon, $key));
+        return $this->db->lastInsertId();
+
+    }
+
 }
 
 

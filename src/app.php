@@ -212,11 +212,11 @@ $app->put('/device', function (\Symfony\Component\HttpFoundation\Request $reques
     $lon = $request->request->get('lon');
 
     try{
-        $deviceCtrl->updateLocation($api_key, $lat, $lon);
+        $deviceCtrl->updateDeviceLocation($api_key, $lat, $lon);
     } catch(\Exception $e) {
         return $app->json(array('errors' => array($e->getMessage())), 404);
     }
-    return $app->json(array('status' => '200', 'message' => 'location updated'), 200);
+    return $app->json(array('status' => '200', 'message' => 'Device location updated'), 200);
 });
 
 $app->get('/location', function() use ($app) {

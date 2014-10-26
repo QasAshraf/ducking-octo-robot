@@ -31,6 +31,14 @@ $app['controller.tag'] = $app->share(
     }
 );
 
+<<<<<<< HEAD
+$app['controller.cron'] = $app->share(
+    function($app) {
+        return new TC\Controllers\CronController($app['db']);
+    }
+);
+
+=======
 $app['controller.device'] = $app->share(
   function ($app) {
       return new TC\Controllers\DeviceController($app['db']);
@@ -42,6 +50,7 @@ $app['controller.user'] = $app->share(
       return new TC\Controllers\UserController($app['db']);
   }
 );
+>>>>>>> e6410981b5fa052c3775bc3d3afd0af9b0b98611
 
 
 // On dev and stage...

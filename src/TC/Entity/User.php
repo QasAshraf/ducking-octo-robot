@@ -27,6 +27,16 @@ class User {
      * @var string
      */
     protected $email;
+
+    /**
+     * @var string
+     */
+    protected $firstname;
+
+    /**
+     * @var string
+     */
+    protected $lastname;
     /**
      * Password hash (SHA512)
      *
@@ -126,6 +136,38 @@ class User {
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * @param string $firstname
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * @param string $lastname
+     */
+    public function setLastname($lastname)
+    {
+        $this->lastname = $lastname;
     }
 
     /**
@@ -259,9 +301,11 @@ class User {
     public function toArray($displayId = false)
     {
         $array = array(
-          'email' => $this->getEmail(),
-          'devices' => $this->getDevices(),
-          'tags' => $this->getTags()
+            'email' => $this->getEmail(),
+            'firstname' => $this->getFirstname(),
+            'lastname' => $this->getLastname(),
+            'devices' => $this->getDevices(),
+            'tags' => $this->getTags()
         );
 
         if($displayId)

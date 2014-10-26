@@ -99,18 +99,13 @@ class DeviceController{
 
         $distance = $this->vincentyGreatCircleDistance($locs['lat1'], $locs['lon1'], $locs['lat2'], $locs['lon2']);
 
-        echo "Distance: $distance";
-
         if($distance <= $joinRadius)
         {
-            echo "we are close enough";
             //we are close enough
             //Check if the tags 2 tags match
             if($tags['user1'] == $tags['loc1'] || $tags['user1'] == $tags['loc2']){
-                echo "we have matched 1st tag";
                 //First tag matched a locations tag
                 if($tags['user2'] == $tags['loc1'] || $tags['user2'] == $tags['loc2']){
-                    echo "we have matched 2nd tag";
                     return true;
                 }
             }
@@ -136,24 +131,17 @@ class DeviceController{
     private function joinLocation($locationId, $userId){
 
         $this->db->executeQuery('INSERT INTO userlocation (fk_deviceid, fk_locationid) VALUES (?,?) ON DUPLICATE KEY UPDATE fk_locationid=? ', array($userId, $locationId, $locationId));
-        echo "Joining Location";
     }
 
     private function updateLocations($key, $lat, $lon){
 
         //assuming API key is here, should be safe as checked previously
         $deviceRow = $this->db->fetchAssoc('SELECT * FROM `device` WHERE api_key = ?', array($key));
-        print_r($deviceRow);
 
         $fk_iduser = $deviceRow['fk_iduser'];
 
         $userTags = $this->db->fetchAll('SELECT * FROM usertag where fk_userid = ?', array($fk_iduser)); //TODO: order by priority
-        echo "MyTags:";
-        print_r($userTags);
         $tagCount = count($userTags);
-
-        echo("Tag Count: " . $tagCount);
-
         $tagCount--;
 
         if($tagCount < 1)
@@ -186,7 +174,6 @@ class DeviceController{
 
                 if($this->shouldJoinLocation($locs, $tags)){
                     $this->joinLocation($group['idlocation'], $fk_iduser);
-                    echo "WUP WUP we have to join";
                     $foundLocation = true;
                     break;
                 }
@@ -205,7 +192,6 @@ class DeviceController{
         }
 
         if(!$foundLocation){
-            echo "we didnt find a location - create one";
             $locId = $this->addLocation($deviceRow['lat'],$deviceRow['lon'], $userTags[0]['fk_tagid'], $userTags[1]['fk_tagid']);
             $this->joinLocation($locId, $fk_iduser);
         }

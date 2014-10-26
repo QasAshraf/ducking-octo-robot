@@ -48,6 +48,17 @@ class UserController{
         }
         return array();
     }
+
+    public function create($user)
+    {
+        $result = $this->db->fetchAll('SELECT * FROM `user` WHERE email = ?', array($user['email']));
+        if(!empty($result)) {
+            throw new \Exception("Email already exists");
+        }
+        $this->db->executeQuery('INSERT INTO `user` (email, firstname, lastname) VALUES (?,?,?)', array($user['email'], $user['firstname'], $user['lastname']));
+        return $this->db->lastInsertId();
+
+    }
 }
 
 

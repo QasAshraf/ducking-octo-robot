@@ -81,6 +81,21 @@ class UserController{
         $this->db->delete('usertag', array('fk_iduser' > $uid));
         $this->db->delete('user', array('iduser' => $uid));
     }
+
+    public function deleteAllTags($uid)
+    {
+        $this->db->delete('usertag', array('fk_iduser' > $uid));
+    }
+
+    public function bindTagToUser($uid, $tagid)
+    {
+        $data = array(
+          'fk_userid' => $uid,
+          'fk_tagid' => $tagid
+        );
+
+        $this->db->insert('usertag', $data);
+    }
 }
 
 

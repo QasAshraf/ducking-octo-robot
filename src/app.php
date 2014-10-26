@@ -49,7 +49,7 @@ $app->put('/user', function(\Symfony\Component\HttpFoundation\Request $request) 
 
     if(!$app['controller.device']->exists($user['api_key']))
     {
-        return $app->json(array('status' => 404, 'message' => 'Couldn\'t find user with API supplied'));
+        return $app->json(array('status' => 404, 'message' => 'Couldn\'t find user with API key supplied'));
     }
 
     try {
@@ -125,6 +125,49 @@ $app->post('/user/logon', function () use ($app) {
           unset($user['longitude']);
           return $app->json($user, 200);
       }
+  });
+
+$app->put('/user/tag', function(\Symfony\Component\HttpFoundation\Request $request) use ($app) {
+     $api_key = $request->request->get('api_key');
+
+     // Check we have some API key
+     if(is_null($api_key))
+     {
+         return $app->json(array('status' => 400, 'message' => 'Missing API key :-('), 400);
+     }
+
+     // Make sure supplied API key exists
+     $deviceCtrl = $app['controller.device'];
+     if(!$deviceCtrl->exists($api_key))
+     {
+         return $app->json(array('status' => 404, 'message' => 'Couldn\'t find the supplied API key'), 400);
+     }
+
+     try {
+         // Delete existing tags for this user
+         $userCtrl = $app['controller.user'];
+         $uid = $deviceCtrl->getUserIdFromKey($api_key);
+         $userCtrl->deleteAllTags($uid);
+
+         // Loop through tags received, create tags if they don't exist
+         $tagCtrl = $app['controller.tag'];
+         $tags = array();
+         foreach($request->request->get('tags') as $tag)
+         {
+             // TODO: Add check if tag already exists
+             if(is_null($tag['id']))
+             {
+                 $tag['id'] = $tagCtrl->create($tag['name']);
+             }
+
+             $userCtrl->bindTagToUser($uid, $tag['id']);
+             $tags[] = $tag;
+         }
+     } catch(\Exception $e) {
+         return $app->json(array('errors' => array($e->getMessage())), 500);
+     }
+
+     return $app->json(array('status' => 201, 'tags' => $tags), 201);
   });
 
 $app->delete('/device', function() use ($app) {

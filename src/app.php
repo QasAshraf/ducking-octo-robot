@@ -242,6 +242,20 @@ $app->get('/messages/{locationid}', function($locationid) use ($app) {
     return $app->json($messages, 200);
 });
 
+$app->post('/messages', function (\Symfony\Component\HttpFoundation\Request $request) use ($app) {
+
+    $messageCtrl = $app['controller.messages'];
+    $api_key = $request->request->get('api_key');
+    $message = $request->request->get('message');
+
+    try{
+        $messageCtrl->addMessage($api_key, $message);
+    } catch(\Exception $e) {
+        return $app->json(array('errors' => array($e->getMessage())), 404);
+    }
+    return $app->json(array('status' => '200', 'message' => 'Message Added'), 200);
+});
+
 $app->error(function (\Exception $e, $code) use ($app) {
       return $app->json(array('status' => $code, 'message' => $e->getMessage()), $code);
   });

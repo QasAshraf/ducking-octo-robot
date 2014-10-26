@@ -74,7 +74,6 @@ class DeviceController{
         $this->db->insert('device', $data);
         return $key;
     }
-
 }
 
 

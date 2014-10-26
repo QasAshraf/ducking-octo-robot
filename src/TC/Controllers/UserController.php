@@ -34,17 +34,18 @@ class UserController{
     }
 
     /**
-     * Get all the tags from the DB
+     * Get the user object from DB
      *
-     * @return array
+     * @param $email
+     *
+     * @return User
      */
     public function find($email)
     {
-        $result = $this->db->fetchAll('SELECT * FROM `user` WHERE email = ?', array($email));
+        $result = $this->db->fetchAll('SELECT iduser AS id, firstname, lastname, password FROM `user` WHERE email = ?', array($email));
         foreach($result as $user)
         {
-            $tempUser = new User($user);
-            return $tempUser->toArray();
+            return new User($user);
         }
         return array();
     }

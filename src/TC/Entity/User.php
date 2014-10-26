@@ -43,18 +43,7 @@ class User {
      * @var string
      */
     protected $password;
-    /**
-     * Users First Name
-     *
-     * @var string
-     */
-    protected $firstname;
-    /**
-     * Users Last Name
-     *
-     * @var string
-     */
-    protected $lastname;
+
     /**
      * Users radius pref for front end
      *
@@ -239,38 +228,6 @@ class User {
     public function getTags()
     {
         return $this->tags;
-    }
-
-    /**
-     * @param string $lastname
-     */
-    public function setLastname($lastname)
-    {
-        $this->lastname = $lastname;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastname()
-    {
-        return $this->lastname;
-    }
-
-    /**
-     * @param string $firstname
-     */
-    public function setFirstname($firstname)
-    {
-        $this->firstname = $firstname;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFirstname()
-    {
-        return $this->firstname;
     }
 
     /**

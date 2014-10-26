@@ -72,8 +72,6 @@ class DeviceController{
         );
 
         $this->db->insert('device', $data);
-        //$this->updateDeviceLocation($key, $user['latitude'], $user['longitude']);
-
         return $key;
     }
 

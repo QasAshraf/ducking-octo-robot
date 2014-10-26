@@ -45,9 +45,11 @@ class LocationController{
         foreach($result as $location)
         {
             $location['tag1'] = $this->db->fetchColumn('SELECT name FROM tag WHERE idtag = ?',
-              array($location['tag1']));
+            array($location['tag1']));
             $location['tag2'] = $this->db->fetchColumn('SELECT name FROM tag WHERE idtag = ?',
-          array($location['tag2']));
+            array($location['tag2']));
+            $countResult = $this->db->executeQuery('SELECT COUNT(*) FROM userlocation WHERE fk_locationid = ?', array($location['id']));
+            $location['count'] =  $countResult->rowCount();
             $tempLocation = new Location($location);
             $locationArray[] = $tempLocation->toArray(true);
         }

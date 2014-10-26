@@ -46,6 +46,13 @@ class Location {
     protected $tag1;
     protected $tag2;
 
+    protected $count;
+
+    public function getCount()
+    {
+        return $this->count;
+    }
+
     /**
      * @param mixed $tag2
      */
@@ -178,6 +185,7 @@ class Location {
           'name' => $this->getName(),
           'lat' => $this->getLatitude(),
           'lon' => $this->getLongitude(),
+          'count' => $this->getCount(),
           'tags' => array(
             array('priority' => 1, 'name' => $this->getTag1()),
             array('priority' => 2, 'name' => $this->getTag2())

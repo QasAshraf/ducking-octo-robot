@@ -42,18 +42,23 @@ $app->get('/user/{email}', function($email) use($app) {
 $app->put('/user', function(\Symfony\Component\HttpFoundation\Request $request) use($app) {
     $userController = $app['controller.user'];
     $user = array(
-        'email' => $request->request->get('email'),
+        'api_key' => $request->request->get('api_key'),
         'firstname'  => $request->request->get('firstname'),
         'lastname' => $request->request->get('lastname')
     );
 
+    if(!$app['controller.device']->exists($user['api_key']))
+    {
+        return $app->json(array('status' => 404, 'message' => 'Couldn\'t find user with API supplied'));
+    }
+
     try {
         $userController->update($user);
     } catch(\Exception $e) {
-        return $app->json(array('errors' => array($e->getMessage())), 404);
+        return $app->json(array('errors' => array($e->getMessage())), 500);
     }
 
-    return $app->json($user, 201);
+    return $app->json($user, 200);
 });
 
 $app->post('/user/register', function (\Symfony\Component\HttpFoundation\Request $request) use ($app) {

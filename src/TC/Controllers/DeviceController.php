@@ -72,6 +72,10 @@ class DeviceController{
         );
 
         $this->db->insert('device', $data);
+
+        // Call Shane's magic update
+        $this->updateDeviceLocation($key, $data['lat'], $data['lon']);
+
         return $key;
     }
 
